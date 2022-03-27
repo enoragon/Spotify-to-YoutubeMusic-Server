@@ -3,4 +3,4 @@ import { safeParseNumber } from './utils';
 
 config();
 
-export const SERVER_PORT = safeParseNumber(process.env.SERVER_PORT) ?? 3000;
+export const PORT = safeParseNumber(process.env.PORT) ?? 3000;

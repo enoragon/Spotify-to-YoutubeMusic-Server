@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'express-async-errors';
 import spotifyFactory from 'spotify-url-info';
 import fetch from 'cross-fetch';
-import { SERVER_PORT } from './config';
+import { PORT } from './config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const spotify = (spotifyFactory as any)(fetch) as typeof spotifyFactory;
@@ -18,6 +18,6 @@ app.get('/', async (req, res) => {
     res.json(data);
 });
 
-app.listen(SERVER_PORT, function () {
-    console.log(`App is running on http://localhost:${SERVER_PORT}`);
+app.listen(PORT, function () {
+    console.log(`App is running on http://localhost:${PORT}`);
 });
