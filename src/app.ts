@@ -12,8 +12,15 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', async (req, res) => {
-    const data = await spotify.getData('https://open.spotify.com/track/5nTtCOCds6I0PHMNtqelas');
+app.get('/spotify/:id', async (req, res) => {
+    const spotifyId = req.params.id;
+
+    if (!spotifyId) {
+        res.send(400);
+        return;
+    }
+
+    const data = await spotify.getData(`https://open.spotify.com/track/${spotifyId}`);
 
     res.json(data);
 });
