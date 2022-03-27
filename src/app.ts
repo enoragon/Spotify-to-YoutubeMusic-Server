@@ -3,6 +3,9 @@ import cors from 'cors';
 import 'express-async-errors';
 import spotifyFactory from 'spotify-url-info';
 import fetch from 'cross-fetch';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import YoutubeMusicApi from 'youtube-music-api';
 import { PORT } from './config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,9 +23,33 @@ app.get('/spotify/:id', async (req, res) => {
         return;
     }
 
-    const data = await spotify.getData(`https://open.spotify.com/track/${spotifyId}`);
+    const [track] = await spotify.getTracks(`https://open.spotify.com/track/${spotifyId}`);
 
-    res.json(data);
+    const title = track.name;
+    const artist = track.artists?.[0].name;
+
+    const api = new YoutubeMusicApi();
+
+    await api.initalize();
+
+    const { content } = await api.search(`${title} by ${artist}`);
+
+    if (!content) {
+        res.send(500);
+        return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const song = content.find((res: any) => res.type === 'song');
+
+    if (!song) {
+        res.send(404);
+        return;
+    }
+
+    const youtubeMusicUrl = `https://music.youtube.com/watch?v=${song.videoId}`;
+
+    res.json({ youtubeMusicUrl });
 });
 
 app.listen(PORT, function () {
