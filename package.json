@@ -4,6 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "start": "node dist/app.js",
+        "build": "tsc --build",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon",
         "lint": "eslint --ignore-path .gitignore --ext .ts src/",
